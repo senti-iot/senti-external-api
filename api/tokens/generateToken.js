@@ -24,14 +24,15 @@ router.post('/generateToken', async (req, res) => {
 	let userId = req.body.userId
 	let type = req.body.type
 	let typeId = req.body.typeId
+	let name = req.body.name
 	let id = crypto.randomBytes(20).toString('hex').toUpperCase()//?
 	let token = sha2['SHA-256'](process.env.vader + id).toString('hex')
 	console.log('Bing')
 	let storeTokenQ = `INSERT INTO externalAPI
-	(token, \`type\`, type_id, created, createdBy)
-	VALUES(?, ?, ?, NOW(), ?);
+	(name, token, \`type\`, type_id, created, createdBy)
+	VALUES(?, ?, ?, ?, NOW(), ?);
 	`
-	await mysqlConn.query(storeTokenQ, [token, type, typeId, userId]).then(rs => {
+	await mysqlConn.query(storeTokenQ, [name, token, type, typeId, userId]).then(rs => {
 		if(rs[0].insertId > 0) {
 			 res.json(id).status(200);
 		}
