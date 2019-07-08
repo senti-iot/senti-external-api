@@ -6,7 +6,9 @@ const helmet = require('helmet')
 const app = express()
 
 // API endpoint imports
+const generateToken = require('./api/tokens/generateToken')
 
+//
 const port = process.env.NODE_PORT || 3007
 
 app.use(helmet())
@@ -14,8 +16,8 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
 app.use(cors())
-
-
+//---Generate Token
+app.use('/', [generateToken])
 //---Start the express server---------------------------------------------------
 
 const startServer = () => {
