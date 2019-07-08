@@ -6,11 +6,12 @@ const moment = require('moment')
 var crypto = require("crypto");
 const mysqlConn = require('../mysqlConn/mysqlconn')
 
-router.get('/validateToken/:id', async (req, res) => {
+router.get('/validateToken/:id/:typeID', async (req, res) => {
 	let id = req.params.id
-	let selectTokenQ = `SELECT * from externalAPI where token=?`
+	let typeID = req.params.typeID
+	let selectTokenQ = `SELECT * from externalAPI where token=? and type_id=?`
 	let token = sha2['SHA-256'](process.env.vader + id).toString('hex')
-	await mysqlConn.query(selectTokenQ, [token]).then(rs => {
+	await mysqlConn.query(selectTokenQ, [token, typeID]).then(rs => {
 		if(rs[0].length > 0){
 			res.status(200).json(true)
 		}
