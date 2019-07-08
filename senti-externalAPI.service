@@ -1,0 +1,21 @@
+[Unit]
+# senti-externalAPI.service
+Description=Senti External API
+Documentation=https://github.com/senti-iot/senti-externalAPI/blob/master/README.md
+# After=network.target
+
+[Service]
+WorkingDirectory=/srv/nodejs/senti/services/externalAPI/production
+ExecStart=/usr/bin/node server.js
+Environment=NODE_PORT=3017
+Environment=NODE_ENV=production
+Type=simple
+Restart=always
+# RestartSec=1
+StartLimitInterval=0
+User=root
+Group=root
+# KillSignal=SIGQUIT
+
+[Install]
+WantedBy=basic.target
