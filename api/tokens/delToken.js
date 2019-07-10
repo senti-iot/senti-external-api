@@ -11,6 +11,8 @@ router.post('/deletetoken/:id', (req, res) => {
 	await mysqlConn.query(deleteTokenQ, [id]).then(rs=> {
 		console.log(rs)
 		res.status(200).json(true)
+	}).catch(err => {
+		res.status(500).json(err)
 	})
 
 });
