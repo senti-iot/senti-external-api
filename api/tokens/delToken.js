@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const mysqlConn = require('../mysqlConn/mysqlconn')
 
 router.post('/deletetoken/:id', async (req, res) => {
 	let id = req.params.id
