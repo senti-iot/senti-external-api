@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-router.delete('/token/:id', (req, res) => {
+router.post('/deletetoken/:id', (req, res) => {
 	let id = req.params.id
 	let deleteTokenQ = `
 	UPDATE externalAPI
