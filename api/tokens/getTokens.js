@@ -5,7 +5,7 @@ const mysqlConn = require('../mysqlConn/mysqlconn')
 router.get('/tokens/:userId', (req, res) => {
 	let id = req.params.userId
 	const selectTokensByUserId = `
-	SELECT * from externalAPI where createdBy = ?
+	SELECT * from externalAPI where createdBy = ? and deleted != 1
 	`
 	mysqlConn.query(selectTokensByUserId, [id]).then(rs => { 
 		if (rs[0].length > 0) {

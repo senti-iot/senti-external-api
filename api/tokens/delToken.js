@@ -9,9 +9,13 @@ router.post('/deletetoken/:id', async (req, res) => {
 	SET deleted=1
 	WHERE id=?;
 	`
-	await mysqlConn.query(deleteTokenQ, [id]).then(rs=> {
+	await mysqlConn.query(deleteTokenQ, [id]).then(rs => {
 		console.log(rs)
-		res.status(200).json(true)
+		if (rs[0].affectedRows > 0)
+			res.status(200).json(true)
+		else {
+			res.status(404).json(false)
+		}
 	}).catch(err => {
 		res.status(500).json(err)
 	})
