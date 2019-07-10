@@ -8,7 +8,7 @@ const app = express()
 // API endpoint imports
 const generateToken = require('./api/tokens/generateToken')
 const getTokens = require('./api/tokens/getTokens')
-
+const delToken = require('./api/tokens/delToken')
 //
 const port = process.env.NODE_PORT || 3007
 
@@ -18,7 +18,7 @@ app.use(express.urlencoded({ extended: true }))
 
 app.use(cors())
 //--- Tokens
-app.use('/', [generateToken, getTokens])
+app.use('/', [generateToken, getTokens, delToken])
 
 //---Start the express server---------------------------------------------------
 
