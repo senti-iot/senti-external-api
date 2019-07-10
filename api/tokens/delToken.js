@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-router.post('/deletetoken/:id', (req, res) => {
+router.post('/deletetoken/:id', async (req, res) => {
 	let id = req.params.id
 	let deleteTokenQ = `
 	UPDATE externalAPI
