@@ -31,17 +31,17 @@
 	},
 	"homepage": "https://github.com/senti-iot/senti-externalAPI#readme",
 	"dependencies": {
-		"apisauce": "^1.0.2",
+		"apisauce": "^1.0.3",
 		"cors": "^2.8.5",
 		"dotenv": "^8.0.0",
-		"express": "^4.16.4",
+		"express": "^4.17.1",
 		"express-pino-logger": "^4.0.0",
 		"find-config": "^1.0.0",
-		"helmet": "^3.15.0",
-		"moment": "^2.22.2",
-		"mqtt": "^2.18.8",
+		"helmet": "^3.18.0",
+		"moment": "^2.24.0",
+		"mqtt": "^3.0.0",
 		"mysql2": "^1.6.5",
-		"pino": "^5.12.2",
+		"pino": "^5.12.6",
 		"senti-apicore": "0.0.17",
 		"sha2": "^1.0.2"
 	}
