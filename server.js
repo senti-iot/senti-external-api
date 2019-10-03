@@ -10,7 +10,7 @@ const generateToken = require('./api/tokens/generateToken')
 const getTokens = require('./api/tokens/getTokens')
 const delToken = require('./api/tokens/delToken')
 //
-const port = process.env.NODE_PORT || 3007
+const port = process.env.NODE_PORT || 3020
 
 app.use(helmet())
 app.use(express.json())
