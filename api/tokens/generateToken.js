@@ -5,6 +5,7 @@ const sha2 = require('sha2')
 const moment = require('moment')
 var crypto = require("crypto");
 const mysqlConn = require('../mysqlConn/mysqlconn')
+const { v4: uuidv4 } = require('uuid')
 
 /**
  * type - resource type
@@ -12,8 +13,8 @@ const mysqlConn = require('../mysqlConn/mysqlconn')
  * Example: type 0 is registry and type_id will have the uuid of the device
  */
 const storeTokenQ = `INSERT INTO externalAPI
-	(name, token, \`type\`, type_id, created, createdBy)
-	VALUES(?, ?, ?, ?, NOW(), ?);
+	(uuid, name, token, \`type\`, type_id, created, createdBy)
+	VALUES(?, ?, ?, ?, ?, NOW(), ?);
 `
 
 /**
@@ -78,6 +79,7 @@ router.get('/validateToken/:rawToken/:resourceType/:resourceId', async (req, res
 });
 
 /**
+ * TODO: Include the lease stuff
  * @param req.body.resourceType - resourceType - 0 - registry, 1 - device, 2 - device type
  * @param req.body.resourceUuid - resource uuid
  */
@@ -89,7 +91,9 @@ router.post('/generateToken', async (req, res) => {
 	let id = crypto.randomBytes(20).toString('hex').toUpperCase()
 	let token = sha2['SHA-256'](process.env.vader + id).toString('hex')
 
-	await mysqlConn.query(storeTokenQ, [name, token, type, typeId, userId]).then(rs => {
+	let uuid = uuidv4()
+
+	await mysqlConn.query(storeTokenQ, [uuid, name, token, type, typeId, userId]).then(rs => {
 		if (rs[0].insertId > 0) {
 			res.json(id).status(200);
 		}

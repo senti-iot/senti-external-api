@@ -37,12 +37,13 @@
 		"express": "^4.17.1",
 		"express-pino-logger": "^4.0.0",
 		"find-config": "^1.0.0",
-		"helmet": "^3.18.0",
+		"helmet": "^4.1.1",
 		"moment": "^2.24.0",
 		"mqtt": "^3.0.0",
 		"mysql2": "^1.6.5",
 		"pino": "^5.12.6",
 		"senti-apicore": "0.0.17",
-		"sha2": "^1.0.2"
+		"sha2": "^1.0.2",
+		"uuid": "^8.3.0"
 	}
 }
