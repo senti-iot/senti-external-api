@@ -9,18 +9,21 @@ const mysqlConn = require('../mysqlConn/mysqlconn')
 /**
  * type - resource type
  * type_id - resource id
- * Example: type 0 is device and type_id will have the uuid of the device
+ * Example: type 0 is registry and type_id will have the uuid of the device
  */
 const storeTokenQ = `INSERT INTO externalAPI
 	(name, token, \`type\`, type_id, created, createdBy)
 	VALUES(?, ?, ?, ?, NOW(), ?);
 `
 
+/**
+ * REDO this crap @andrei
+ */
 
-router.get('/validateToken/:rawToken/:type/:typeID', async (req, res) => {
+router.get('/validateToken/:rawToken/:resourceType/:resourceId', async (req, res) => {
 	let rawToken = req.params.rawToken
-	let typeID = req.params.typeID
-	let type = req.params.type
+	let typeID = req.params.resourceId
+	let type = req.params.resourceType
 	console.log(type)
 	let selectTokenQ = `SELECT * from externalAPI where token=? and type_id=?`
 	let token = sha2['SHA-256'](process.env.vader + rawToken).toString('hex')
@@ -74,6 +77,10 @@ router.get('/validateToken/:rawToken/:type/:typeID', async (req, res) => {
 	})
 });
 
+/**
+ * @param req.body.resourceType - resourceType - 0 - registry, 1 - device, 2 - device type
+ * @param req.body.resourceUuid - resource uuid
+ */
 router.post('/generateToken', async (req, res) => {
 	let userId = req.body.userId
 	let type = req.body.resourceType
