@@ -1,11 +1,12 @@
 // const dotenv = require('dotenv')
-const express = require('express');
-const router = express.Router();
+const express = require('express')
+const router = express.Router()
 const sha2 = require('sha2')
 const moment = require('moment')
-var crypto = require("crypto");
+var crypto = require("crypto")
 const mysqlConn = require('../mysqlConn/mysqlconn')
 const { v4: uuidv4 } = require('uuid')
+const { Console } = require('console')
 
 /**
  * type - resource type
@@ -30,53 +31,19 @@ router.get('/validateToken/:rawToken/:resourceType/:resourceId', async (req, res
 	let token = sha2['SHA-256'](process.env.vader + rawToken).toString('hex')
 	console.log(rawToken)
 	console.log(token)
+	console.log('ResourceType', type)
+	console.log('ResourceTypeID', typeID)
 	await mysqlConn.query(selectTokenQ, [token, typeID]).then(async rs => {
 		if (rs[0].length > 0) {
 			console.log('Valid Token')
 			res.status(200).json(true)
 		}
 		else {
-			if (type === 'device') {
-				selectTokenQ = `SELECT * from externalAPI where token=? and type=1`
-				await mysqlConn.query(selectTokenQ, [token, typeID]).then(async rs => {
-					if (rs[0].length > 0) {
-						console.log('Vaild Registry token')
-						let checkReg = `SELECT * from Device where id=? and reg_id=?`
-						await mysqlConn.query(checkReg, [typeID, rs[0][0].type_id]).then(rs => {
-							if (rs[0].length > 0) {
-								console.log('Valid Registry/Device token')
-								return res.status(200).json(true)
-							}
-							else {
-								return res.status(404).json(false)
-							}
-						})
-					}
-				})
-				selectTokenQ = `SELECT * from externalAPI where token=? and type=2`
-				await mysqlConn.query(selectTokenQ, [token, typeID]).then(async rs => {
-					if (rs[0].length > 0) {
-						console.log('Vaild Device Type token')
-						let checkReg = `SELECT * from Device where id=? and type_id=?`
-						await mysqlConn.query(checkReg, [typeID, rs[0][0].type_id]).then(rs => {
-							if (rs[0].length > 0) {
-								console.log('Valid DeviceType/Device token')
-								return res.status(200).json(true)
-							}
-							else {
-								return res.status(404).json(false)
-							}
-						})
-					}
-				})
-			}
-
-			else {
-				res.status(404).json(false)
-			}
+			console.log('Invalid Token')
+			res.status(404).json(false)
 		}
 	})
-});
+})
 
 /**
  * TODO: Include the lease stuff
@@ -95,7 +62,7 @@ router.post('/generateToken', async (req, res) => {
 
 	await mysqlConn.query(storeTokenQ, [uuid, name, token, type, typeId, userId]).then(rs => {
 		if (rs[0].insertId > 0) {
-			res.json(id).status(200);
+			res.json(id).status(200)
 		}
 		else {
 			res.json(false).status(500)
@@ -103,6 +70,6 @@ router.post('/generateToken', async (req, res) => {
 	}).catch(err => {
 		res.status(500).json(err)
 	})
-});
+})
 
 module.exports = router
