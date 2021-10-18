@@ -9,7 +9,7 @@ const app = express()
 const generateToken = require('./api/tokens/generateToken')
 const getTokens = require('./api/tokens/getTokens')
 const delToken = require('./api/tokens/delToken')
-const count = require('./api/tokens/count')
+const count = require('./api/tokens/countCall')
 //
 const port = process.env.NODE_PORT || 3020
 
