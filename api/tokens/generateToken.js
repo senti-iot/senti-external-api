@@ -14,13 +14,9 @@ const { Console } = require('console')
  * Example: type 0 is registry and type_id will have the uuid of the device
  */
 const storeTokenQ = `INSERT INTO externalAPI
-	(uuid, name, token, \`type\`, type_id, created, createdBy)
-	VALUES(?, ?, ?, ?, ?, NOW(), ?);
+	(uuid, name, token, \`type\`, type_id, created, createdBy, counter, lastCall)
+	VALUES(?, ?, ?, ?, ?, NOW(), ?, 0, NULL);
 `
-
-/**
- * REDO this crap @andrei
- */
 
 router.get('/validateToken/:rawToken/:resourceType/:resourceId', async (req, res) => {
 	let rawToken = req.params.rawToken
@@ -46,7 +42,6 @@ router.get('/validateToken/:rawToken/:resourceType/:resourceId', async (req, res
 })
 
 /**
- * TODO: Include the lease stuff
  * @param req.body.resourceType - resourceType - 0 - registry, 1 - device, 2 - device type
  * @param req.body.resourceUuid - resource uuid
  */
