@@ -21,3 +21,5 @@ router.get('/count/:token', async (req, res) => {
 	else
 		return res.status(500)
 })
+
+module.exports = router
