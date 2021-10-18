@@ -9,6 +9,7 @@ const app = express()
 const generateToken = require('./api/tokens/generateToken')
 const getTokens = require('./api/tokens/getTokens')
 const delToken = require('./api/tokens/delToken')
+const count = require('./api/tokens/count')
 //
 const port = process.env.NODE_PORT || 3020
 
@@ -18,7 +19,7 @@ app.use(express.urlencoded({ extended: true }))
 
 app.use(cors())
 //--- Tokens
-app.use('/', [generateToken, getTokens, delToken])
+app.use('/', [generateToken, getTokens, delToken, count])
 
 //---Start the express server---------------------------------------------------
 
