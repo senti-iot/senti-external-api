@@ -5,8 +5,9 @@ const mysqlConn = require('../mysqlConn/mysqlconn')
 
 
 router.get('/count/:token', async (req, res) => {
-	let token = req.params.token
+	let rawToken = req.params.token
 	let selectTokenSQL = `SELECT * from externalAPI where token=?`
+	let token = sha2['SHA-256'](process.env.vader + rawToken).toString('hex')
 	let sToken = mysqlConn.query(selectTokenSQL,[token]).then(rs => rs[0][0])
 	if (sToken) {
 		let countSQL = `
