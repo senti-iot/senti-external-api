@@ -13,7 +13,7 @@ fi
 
 if [[ "$1" == "dev" ]]; then
 	npm install --prefix /srv/nodejs/senti/services/externalAPI/development
-	sudo /srv/nodejs/senti/services/externalAPI/production/registerservice-production
+	sudo /srv/nodejs/senti/services/externalAPI/production/registerservice-development
 	systemctl restart senti-externalAPI-dev.service
 	# Senti Slack Workspace
 	curl -X POST -H 'Content-type: application/json' --data '{"text":"Senti External API DEV updated and restarted!"}' https://hooks.slack.com/services/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
