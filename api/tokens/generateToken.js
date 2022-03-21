@@ -32,6 +32,7 @@ router.get('/validateToken/:rawToken/:resourceType/:resourceId', async (req, res
 	await mysqlConn.query(selectTokenQ, [token, typeID]).then(async rs => {
 		if (rs[0].length > 0) {
 			console.log('Valid Token')
+
 			res.status(200).json(true)
 		}
 		else {
@@ -54,6 +55,17 @@ router.get('/validateGeneralToken/:rawToken', async (req, res) => {
 	console.log('ResourceTypeID', typeID)
 	await mysqlConn.query(selectTokenQ, [token, typeID]).then(async rs => {
 		if (rs[0].length > 0) {
+			let sToken = rs[0][0]
+			let countSQL = `
+			UPDATE externalAPI
+			SET count = ${sToken.count + 1},
+			lastCall = "${moment().format('YYYY-MM-DD HH:mm:ss')}"
+			WHERE id=?;
+		`
+			let format = mysqlConn.format(countSQL, [sToken.id])
+			console.log(format)
+			let countQuery = mysqlConn.query(countSQL, [sToken.id])
+
 			console.log('Valid Token')
 			res.status(200).json(true)
 		}
