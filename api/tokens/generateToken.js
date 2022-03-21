@@ -41,6 +41,28 @@ router.get('/validateToken/:rawToken/:resourceType/:resourceId', async (req, res
 	})
 })
 
+router.get('/validateGeneralToken/:rawToken', async (req, res) => {
+	let rawToken = req.params.rawToken
+	let typeID = req.params.resourceId
+	let type = req.params.resourceType
+	console.log(type)
+	let selectTokenQ = `SELECT * from externalAPI where token=?`
+	let token = sha2['SHA-256'](process.env.vader + rawToken).toString('hex')
+	console.log(rawToken)
+	console.log(token)
+	console.log('ResourceType', type)
+	console.log('ResourceTypeID', typeID)
+	await mysqlConn.query(selectTokenQ, [token, typeID]).then(async rs => {
+		if (rs[0].length > 0) {
+			console.log('Valid Token')
+			res.status(200).json(true)
+		}
+		else {
+			console.log('Invalid Token')
+			res.status(404).json(false)
+		}
+	})
+})
 /**
  * @param req.body.resourceType - resourceType - 0 - registry, 1 - device, 2 - device type
  * @param req.body.resourceUuid - resource uuid
